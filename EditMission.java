@@ -1,47 +1,72 @@
 import org.apache.poi.ss.excelant.IExcelAntWorkbookHandler;
 
+import java.io.IOException;
 import java.util.Scanner;
 
 public class EditMission {
 
     public EditMission(){}
 
-
+    public EditMission(Mission mission){
+        this.mission = mission;
+    }
 
     public static Scanner sc= new Scanner(System.in);
     int mID;
     int choose;
     Mission mission = new Mission();
+    MissionList missionList = new MissionList();
 
-    public void showMenu() {
-        boolean select = false;
-        while (!select) {
-            try {
-                sc= new Scanner(System.in);
-                System.out.println("Please enter your MissionID:");
-                mID = sc.nextInt();
-                select = true;
-            } catch (Exception e) {
-                System.out.println("Input a number");
+//    public void showMenu() {
+//        try {
+//            missionList.setList(new Read().readMission());
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        boolean select = false;
+//        while (!select) {
+//            try {
+//                sc= new Scanner(System.in);
+//                System.out.println("Please enter your MissionID:");
+//                mID = sc.nextInt();
+//                select = true;
+//            } catch (Exception e) {
+//                System.out.println("Input a number");
+//            }
+//            check(mID);
+//        }
+//    }
+//
+//    public void check(int missionID){
+//        mission =  missionList.getMission(missionID);
+//        if (mission == null){
+//            System.out.println("Please try another ID.");
+//            System.out.println("  ");
+//            System.out.println("  ");
+//            showMenu();
+//        }else {
+//            showMissionInfo();
+//            showChange();
+//        }
+//    }
 
-            }
-            check(mID);
-        }
+    public void showMissionInfo() throws IOException {
+        System.out.println("Mission name: " + mission.getMissionName());
+        System.out.println("Mission Description: " + mission.getDescription());
+        System.out.println("Mission status: " + mission.getStatus());
+        System.out.println("Mission launch date: " + mission.getLaunchDate());
+        System.out.println("Mission Country Allowed: " + mission.getCountryAllowed());
+        System.out.println("Mission Country Origin: " + mission.getCountryOforigin());
+        System.out.println("Mission Job: " + mission.getJob());
+        System.out.println("Mission Location: " + mission.getLocation());
+        System.out.println("Mission Duration: " + mission.getDuration());
+        System.out.println("  ");
+        System.out.println("  ");
+        showChange();
     }
 
-    public void check(int missionID){
-        mission = new MissionList().getMission(missionID);
-        if (mission == null){
-            System.out.println("Please try another ID.");
-            System.out.println("  ");
-            System.out.println("  ");
-            showMenu();
-        }else {
-            showChange();
-        }
-    }
-
-    public void showChange(){
+    public void showChange() throws IOException {
+        showMissionInfo();
         boolean select = false;
         while (!select){
             System.out.println("1. Change Mission Name;");
@@ -91,6 +116,7 @@ public class EditMission {
                 ChangeDuration();
                 break;
             case 10:
+                new EditMenu().showMenu();
                 break;
             default:
                 System.out.println("PLease enter a valid number!");
@@ -101,7 +127,7 @@ public class EditMission {
         }
     }
 
-    public void ChangeMissionName(){
+    public void ChangeMissionName() throws IOException {
         boolean select = false;
         int no = 0;
         String missionName;
@@ -142,7 +168,7 @@ public class EditMission {
         }
     }
 
-    public void ChangeMissionDesc(){
+    public void ChangeMissionDesc() throws IOException{
         boolean select = false;
         int no = 0;
         String missionDesc;
@@ -184,7 +210,7 @@ public class EditMission {
 
     }
 
-    public void ChangeMissionStatus(){
+    public void ChangeMissionStatus() throws IOException{
         boolean select = false;
         int no = 0;
         int status = 0;
@@ -232,7 +258,7 @@ public class EditMission {
         }
     }
 
-    public void ChangeStatus(int no){
+    public void ChangeStatus(int no) throws IOException{
         switch (no){
             case 1:
                 mission.setStatus("Planning phase");break;
@@ -249,7 +275,7 @@ public class EditMission {
         }
     }
 
-    public void ChangeCountryAllowed(){
+    public void ChangeCountryAllowed()throws IOException {
         boolean select = false;
         int no = 0;
         String countryOfAllow;
@@ -289,7 +315,7 @@ public class EditMission {
         }
     }
 
-    public void ChangeCountryOrigin(){
+    public void ChangeCountryOrigin() throws IOException{
         boolean select = false;
         int no = 0;
         String countryOfOrigin;
@@ -329,7 +355,7 @@ public class EditMission {
         }
     }
 
-    public void ChangeJob(){
+    public void ChangeJob() throws IOException{
         boolean select = false;
         int no = 0;
         String countryOfOrigin;
@@ -420,7 +446,7 @@ public class EditMission {
         }
     }
 
-    public void ChangeDate(){
+    public void ChangeDate() throws IOException {
         boolean select = false;
         int no = 0;
         String launchDate;
@@ -445,7 +471,7 @@ public class EditMission {
                 System.out.println("Mission's new location:" + mission.getLaunchDate());
                 System.out.println("Click enter to go back.");
                 sc.nextLine();
-                showMenu();
+                showChange();
                 break;
             case 2:
                 System.out.print('\u000C');
@@ -460,7 +486,7 @@ public class EditMission {
         }
     }
 
-    public void ChangeLocation(){
+    public void ChangeLocation() throws IOException {
         boolean select = false;
         int no = 0;
         String location;
@@ -502,7 +528,7 @@ public class EditMission {
 
     }
 
-    public void ChangeDuration(){
+    public void ChangeDuration() throws IOException {
         boolean select = false;
         int no = 0;
         String duration;
@@ -528,11 +554,11 @@ public class EditMission {
                 System.out.println("Mission's new duration is:" + mission.getDuration());
                 System.out.println("Click Enter to go back.");
                 sc.nextLine();
-                showMenu();
+                showChange();
                 break;
             case 2:
                 System.out.print('\u000C');
-                showMenu();
+                showChange();
                 break;
             default:
                 System.out.print('\u000C');

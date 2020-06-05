@@ -6,6 +6,10 @@ import java.util.Scanner;
 
 public class ShuttleInfo {
 
+    public ShuttleInfo(Mission mission){
+        this.mission = mission;
+    }
+
     public static Scanner sc = new Scanner(System.in);
     Character choose = 0;
 
@@ -16,9 +20,8 @@ public class ShuttleInfo {
     Read read = new Read();
 
 
-    public void edit(int missionID){
-        Mission mission = new Mission();
-        mission = new MissionList().getMission(missionID);
+    public void edit() throws IOException {
+
         try {
             shuttles = read.Read();
         } catch (IOException e) {
@@ -48,16 +51,19 @@ public class ShuttleInfo {
             do {
                 choose = '9';
                 choose = sc.nextLine().charAt(0);
-                switch (Integer.valueOf(choose)) {
-                    case 1:
+                switch (choose) {
+                    case '1':
                         System.out.println("Enter Shuttle Id");
                         String tempID = sc.nextLine();
                         mission.setShuttle(getShuttle(tempID));//try catch?
+                        System.out.println("New Shuttle is " + mission.getShuttle().getShuttleId());
+                        new EditMenu().chooseMission();
                         break;
-                    case 2:
+                    case '2':
                         break;
-                    case 0:
-                        System.exit(0);
+                    case '0':
+                       // System.exit(0);
+                        new EditMenu().chooseMission();
                         break;
                     default:
                         System.out.print('\u000C');

@@ -9,11 +9,11 @@ public class login {
 
     public login(){}
 
-    public static void main(String argus[]) {
-        new login().showMenu();
-    }
+//    public static void main(String argus[]) {
+//        new login().showMenu();
+//    }
 
-    public void showMenu(){
+    public void showMenu() throws IOException {
         /*try {
             new MissionList().setList(read.readMission());
         } catch (IOException e) {
@@ -26,13 +26,13 @@ public class login {
         System.out.println("  ");
         System.out.println("  ");
         choose = sc.nextLine().charAt(0);
-        switch (Integer.valueOf(choose)){
-            case 1:
+        switch (choose){
+            case '1':
                 new CreateMission().showMenu();break;
-            case 2:
-                new EditMenu().showMenu();
+            case '2':
+                new EditMenu().chooseMission();
                 break;
-            case 0:
+            case '0':
                 System.exit(0);break;
             default:
                 System.out.print('\u000C');

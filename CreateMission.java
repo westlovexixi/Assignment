@@ -1,3 +1,4 @@
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Scanner;
 import java.util.regex.Matcher;
@@ -23,14 +24,15 @@ public class CreateMission {
     String cRequirement;
     String jobNo;
     String enter;
+    String duration;
     String eRequirement;
 
-    public static void main(String argus[]) {
+    public static void main(String argus[]) throws IOException {
         new CreateMission().showMenu();
     }
 
 
-    public void showMenu() {
+    public void showMenu() throws IOException {
         System.out.println("Please enter the number:");
         System.out.println("1. Create new mission");
         if (mission.getMissionName() != null) {
@@ -44,6 +46,7 @@ public class CreateMission {
             System.out.println("9. Change mission's launch date;");
             System.out.println("10. Change mission's location;");
             System.out.println("11. Change mission's state;");
+            System.out.println("12. Change mission's duration;");
             System.out.println("0. Exit.");
         } else {
             System.out.println("0. Exit.");
@@ -93,6 +96,9 @@ public class CreateMission {
             case 11:
                 changeMissionStatus();
                 break;
+            case 12:
+                changeMissionDuration();
+                break;
             case 0:
                 if (mission.getMissionName() != null){
                     new MissionList().addList(mission);
@@ -126,7 +132,7 @@ public class CreateMission {
     }
 
 
-    public void CollectMissionInfo() {
+    public void CollectMissionInfo() throws IOException {
         Scanner sc = new Scanner(System.in);
 
         System.out.println("Please enter you Mission Name:(click enter to exit create)");
@@ -169,7 +175,18 @@ public class CreateMission {
         }
         System.out.print('\u000C');
 
-        System.out.println("Please choose your Job:(click enter to exit create)");
+        System.out.println("Please enter Mission's duration:(click Enter to exit create)");
+        duration = sc.nextLine();
+        if (duration.length() == 0){
+            System.out.print('\u000C');
+            showMenu();
+        } else {
+            mission.setDuration(duration);
+        }
+        System.out.print('\u000C');
+
+
+        System.out.println("Please choose your Job:(click Enter to exit create)");
         System.out.println("1. builder");
         System.out.println("2. carpenter");
         System.out.println("3. civil engineer");
@@ -180,22 +197,27 @@ public class CreateMission {
         System.out.println("8. nurse");
         System.out.println("9. painter");
         System.out.println("0. surgeon");
-        job = sc.nextLine();
-        if (job.length() == 0){
+        try {
+            Scanner scanv = new Scanner(System.in);
+            int a = sc.nextInt();
+            job = String.valueOf(a);
+            if (job.length() == 0){
+                System.out.print('\u000C');
+                showMenu();
+            } else {
+                mission.setJob(job);
+                System.out.println("Please enter the total number of job you need:");
+                jobNo = sc.nextLine();
+            }
             System.out.print('\u000C');
-            showMenu();
-        } else {
-            mission.setJob(job);
-            System.out.println("Please enter the total number of job you need:");
-            jobNo = sc.nextLine();
+        }catch (Exception e){
+            System.out.println("Enter a number");
         }
-        System.out.print('\u000C');
 
-
-        /*System.out.println("Please choose your Employment Requirement:(click enter to exit create)");
+        /*System.out.println("Please choose your Employment Requirement:(click Enter to exit create)");
         eRequirement = sc.nextLine();*/
 
-        System.out.println("Please choose your Cargo For:(click enter to exit create)");
+        System.out.println("Please choose your Cargo For:(click Enter to exit create)");
         System.out.println("1. journey");
         System.out.println("2. mission");
         System.out.println("3. journeyAndMission");
@@ -208,7 +230,8 @@ public class CreateMission {
         }
         System.out.print('\u000C');
 
-        System.out.println("Please enter your Launch Date:(DD/MM/YYYY)(click enter to exit create)");
+
+        System.out.println("Please enter your Launch Date:(DD/MM/YYYY)(click Enter to exit create)");
         launchDate = sc.nextLine();
         if (launchDate.length() == 0){
             System.out.print('\u000C');
@@ -218,7 +241,7 @@ public class CreateMission {
         }
         System.out.print('\u000C');
 
-        System.out.println("Please enter your location:(click enter to exit create)");
+        System.out.println("Please enter your location:(click Enter to exit create)");
         location = sc.nextLine();
         if (location.length() == 0){
             System.out.print('\u000C');
@@ -233,8 +256,8 @@ public class CreateMission {
         showState();
     }
 
-    public void showState(){
-        System.out.println("Please select your status:(click enter to exit create)");
+    public void showState() throws IOException {
+        System.out.println("Please select your status:(click Enter to exit create)");
         System.out.println("1. Planning phase");
         System.out.println("2. Departed Earth");
         System.out.println("3. Landed on Mars");
@@ -261,7 +284,7 @@ public class CreateMission {
                     mission.setStatus("Mission completed");break;
                 default:
                     System.out.print('\u000C');
-                    System.out.println("Your enter the wrong number. Please enter again.");
+                    System.out.println("Your enter the wrong number. Please Enter again.");
                     System.out.println(" ");
                     System.out.println(" ");
                     showState();break;
@@ -272,7 +295,7 @@ public class CreateMission {
     }
 
 
-    public void changeMissionName() {
+    public void changeMissionName() throws IOException {
         System.out.println("Your mission name:" + missionName);
         System.out.println("1. Change mission name;");
         System.out.println("2. Exit.");
@@ -285,7 +308,7 @@ public class CreateMission {
                 mission.setMissionName(missionName);
                 System.out.print('\u000C');
                 System.out.println("Mission's new Name:" + mission.getMissionName());
-                System.out.println("Click enter to go back.");
+                System.out.println("Click Enter to go back.");
                 sc.nextLine();
                 showMenu();
                 break;
@@ -302,7 +325,7 @@ public class CreateMission {
         }
     }
 
-    public void changeMissionDesc() {
+    public void changeMissionDesc() throws IOException {
         System.out.println("Your mission description:" + mission.getDescription());
         System.out.println("1. Change mission description;");
         System.out.println("2. Exit.");
@@ -314,7 +337,7 @@ public class CreateMission {
                 mission.setDescription(missionDescription);
                 System.out.print('\u000C');
                 System.out.println("Mission's new description:" + mission.getDescription());
-                System.out.println("Click enter to go back.");
+                System.out.println("Click Enter to go back.");
                 sc.nextLine();
                 showMenu();
                 break;
@@ -331,7 +354,7 @@ public class CreateMission {
         }
     }
 
-    public void changeCountryOfOrigin() {
+    public void changeCountryOfOrigin() throws IOException {
         System.out.println("Your mission's Country Of Origin:" + mission.getCountryOforigin());
         System.out.println("1. Change mission's Country Of Origin;");
         System.out.println("2. Exit.");
@@ -343,7 +366,7 @@ public class CreateMission {
                 mission.setCountryOforigin(countryOfOrigin);
                 System.out.print('\u000C');
                 System.out.println("Mission's new Country Of Origin:" + mission.getCountryOforigin());
-                System.out.println("Click enter to go back.");
+                System.out.println("Click Enter to go back.");
                 sc.nextLine();
                 showMenu();
                 break;
@@ -361,7 +384,7 @@ public class CreateMission {
     }
 
 
-    public void changeCountryOfAllowed() {
+    public void changeCountryOfAllowed() throws IOException {
         System.out.println("Your mission's Country of Allowed:" + mission.getCountryAllowed());
         System.out.println("1. Change mission's Country of Allowed;");
         System.out.println("2. Exit.");
@@ -373,7 +396,7 @@ public class CreateMission {
                 mission.setCountryAllowed(countryOfAllow);
                 System.out.print('\u000C');
                 System.out.println("Mission's new Country of Allowed:" + mission.getCountryAllowed());
-                System.out.println("Click enter to go back.");
+                System.out.println("Click Enter to go back.");
                 sc.nextLine();
                 showMenu();
                 break;
@@ -390,31 +413,214 @@ public class CreateMission {
         }
     }
 
-    public void changeMissionJob() {
+    public void changeMissionJob() throws IOException {
+        boolean select = false;
+        System.out.println("Your mission Job is:" + mission.getJob());
+        while (!select){
+            System.out.println("1. Change mission Jon;");
+            System.out.println("2. Exit.");
+            try {
+                choose = sc.nextInt();
+                select = true;
+            }catch (Exception e){
+                System.out.println("Input a valid number!");
 
+            }
+        }
+        switch (choose){
+            case 1:
+                select = false;
+                int no = 0;
+                System.out.println("Please select a new Job:");
+                while (!select){
+                    System.out.println("1. builder");
+                    System.out.println("2. carpenter");
+                    System.out.println("3. civil engineer");
+                    System.out.println("4. designer");
+                    System.out.println("5. electrician");
+                    System.out.println("6. general practitioner");
+                    System.out.println("7. manufacturer");
+                    System.out.println("8. nurse");
+                    System.out.println("9. painter");
+                    System.out.println("0. surgeon");
+                    try {
+                        sc = new Scanner(System.in);
+                        no = sc.nextInt();
+                        select = true;
+                    } catch (Exception e){
+                        System.out.println("Input a valid number!");
+                        System.out.println("  ");
+                        System.out.println("  ");
+                    }
+                }
+                changeJob(no);
+                break;
+            case 2:
+                System.out.print('\u000C');
+                showMenu();
+                break;
+            default:
+                System.out.print('\u000C');
+                System.out.println("Wrong number. Please enter again.");
+                System.out.println(" ");
+                System.out.println(" ");
+                changeMissionJob();break;
+        }
+
+    }
+
+    public void changeJob(int no){
+        switch (no){
+            case 1:
+                mission.setJob("builder");
+                break;
+            case 2:
+                mission.setJob("carpenter");
+                break;
+            case 3:
+                mission.setJob("civil engineer");
+                break;
+            case 4:
+                mission.setJob("designer");
+                break;
+            case 5:
+                mission.setJob("electrician");
+                break;
+            case 6:
+                mission.setJob("general practitioner");
+                break;
+            case 7:
+                mission.setJob("manufacturer");
+                break;
+            case 8:
+                mission.setJob("nurse");
+                break;
+            case 9:
+                mission.setJob("painter");
+                break;
+            case 10:
+                mission.setJob("surgeon");
+                break;
+        }
+    }
+
+    public void changeMissionDuration() throws IOException{
+        System.out.println("Your mission duration is:" + mission.getDuration());
+        System.out.println("1. Change mission's launch date;");
+        System.out.println("2. Exit.");
+        choose = sc.nextInt();
+        switch (choose){
+            case 1:
+                System.out.println("Please enter a new duration:");
+                duration = sc.nextLine();
+                mission.setDuration(duration);
+                System.out.print('\u000C');
+                System.out.println("Mission's new duration is:" + mission.getDuration());
+                System.out.println("Click Enter to go back.");
+                sc.nextLine();
+                showMenu();
+                break;
+            case 2:
+                System.out.print('\u000C');
+                showMenu();
+                break;
+            default:
+                System.out.print('\u000C');
+                System.out.println("Wrong number. Please enter again.");
+                System.out.println(" ");
+                System.out.println(" ");
+                changeMissionDuration();break;
+        }
     }
 
     public void changeMissionEmploymentRequirement(){
 
     }
 
-    public void changeCargoRequirement(){
-
+    public void changeCargoRequirement() throws IOException{
+        boolean select = false;
+        System.out.println("Your mission's cargo requirement: " + mission.getCargoRequirement());
+        while (!select){
+            System.out.println("1. Change mission cargo requirement;");
+            System.out.println("2. Exit.");
+            try {
+                sc = new Scanner(System.in);
+                choose = sc.nextInt();
+                select = true;
+            } catch (Exception e){
+                System.out.println("Input a valid number!");
+                System.out.println("  ");
+                System.out.println("  ");
+            }
+        }
+        switch (choose){
+            case 1:
+                select = false;
+                int no = 0;
+                System.out.println("Please choose a new cargo");
+                while (!select){
+                    System.out.println("1. journey");
+                    System.out.println("2. mission");
+                    System.out.println("3. journeyAndMission");
+                    try {
+                        sc = new Scanner(System.in);
+                        no = sc.nextInt();
+                        select = true;
+                    }catch (Exception e){
+                        System.out.println("Input a valid number!");
+                        System.out.println("  ");
+                        System.out.println("  ");
+                    }
+                    switch (no){
+                        case 1:
+                            mission.setCargoRequirement("journey");
+                            break;
+                        case 2:
+                            mission.setCargoRequirement("mission");
+                            break;
+                        case 3:
+                            mission.setCargoRequirement("journeyAndMission");
+                            break;
+                        default:
+                            System.out.print('\u000C');
+                            System.out.println("Wrong number. Please try again.");
+                            System.out.println(" ");
+                            System.out.println(" ");
+                            changeCargoRequirement();break;
+                    }
+                }
+                System.out.println("Change successful!");
+                System.out.println("  ");
+                System.out.println("  ");
+                changeCargoRequirement();
+                break;
+            case 2:
+                System.out.print('\u000C');
+                showMenu();
+                break;
+            default:
+                System.out.print('\u000C');
+                System.out.println("Wrong number. Please enter again.");
+                System.out.println(" ");
+                System.out.println(" ");
+                changeCargoRequirement();break;
+        }
     }
 
-    public void changeLaunchDate(){
+
+    public void changeLaunchDate() throws IOException{
         System.out.println("Your mission's launch date:" + mission.getLaunchDate());
         System.out.println("1. Change mission's launch date;");
         System.out.println("2. Exit.");
         choose = sc.nextInt();
         switch (choose) {
             case 1:
-                System.out.println("Please enter new launch date:");
+                System.out.println("Please enter new launch date:(DD/MM/YYYY)");
                 launchDate = sc.nextLine();
                 mission.setLaunchDate(launchDate);
                 System.out.print('\u000C');
                 System.out.println("Mission's new location:" + mission.getLaunchDate());
-                System.out.println("Click enter to go back.");
+                System.out.println("Click Enter to go back.");
                 sc.nextLine();
                 showMenu();
                 break;
@@ -431,7 +637,7 @@ public class CreateMission {
         }
     }
 
-    public void changeMissionLocation(){
+    public void changeMissionLocation() throws IOException{
         System.out.println("Your mission's location:" + mission.getLocation());
         System.out.println("1. Change mission location;");
         System.out.println("2. Exit.");
@@ -443,7 +649,7 @@ public class CreateMission {
                 mission.setLocation(location);
                 System.out.print('\u000C');
                 System.out.println("Mission's new location:" + mission.getLocation());
-                System.out.println("Click enter to go back.");
+                System.out.println("Click Enter to go back.");
                 sc.nextLine();
                 showMenu();
                 break;
@@ -460,7 +666,7 @@ public class CreateMission {
         }
     }
 
-    public void changeMissionStatus(){
+    public void changeMissionStatus() throws IOException{
         System.out.println("Your mission status:" + mission.getStatus());
         System.out.println("1. Change mission status;");
         System.out.println("2. Exit.");
@@ -472,7 +678,7 @@ public class CreateMission {
                 mission.setStatus(status);
                 System.out.print('\u000C');
                 System.out.println("Mission's new status:" + mission.getStatus());
-                System.out.println("Click enter to go back.");
+                System.out.println("Click Enter to go back.");
                 sc.nextLine();
                 showMenu();
                 break;
